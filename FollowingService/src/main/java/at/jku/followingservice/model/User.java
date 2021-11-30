@@ -1,6 +1,5 @@
 package at.jku.followingservice.model;
 
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -33,19 +32,35 @@ public class User {
     }
 
     @Relationship(type = "FOLLOWS")
-    public Set<User> followers;
+    protected Set<User> followedUsers;
 
-    public void follow(User user) {
-        if (followers == null) {
-            followers = new HashSet<>();
-        }
-        followers.add(user);
+    @Relationship(type = "FOLLOWS")
+    protected Set<Hashtag> followedHashtags;
+
+    public void followUser(User user) {
+        if (followedUsers == null)
+            followedUsers = new HashSet<>();
+        followedUsers.add(user);
+    }
+
+    public void followHashtag(Hashtag hashtag) {
+        if(followedHashtags == null)
+            followedHashtags = new HashSet<>();
+        followedHashtags.add(hashtag);
+    }
+
+    public Set<User> getFollowedUsers() {
+        return followedUsers;
+    }
+
+    public Set<Hashtag> getFollowedHashtags() {
+        return followedHashtags;
     }
 
     @Override
     public String toString() {
         return this.username + "'s followers: "
-                + Optional.ofNullable(this.followers).orElse(
+                + Optional.ofNullable(this.followedUsers).orElse(
                 Collections.emptySet()).stream()
                 .map(User::getUsername)
                 .collect(Collectors.toList());
