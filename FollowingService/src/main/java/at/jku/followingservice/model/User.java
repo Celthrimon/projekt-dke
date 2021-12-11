@@ -1,5 +1,6 @@
 package at.jku.followingservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -31,9 +32,11 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     @Relationship(type = "FOLLOWS")
     protected Set<User> followedUsers;
 
+    @JsonIgnore
     @Relationship(type = "FOLLOWS")
     protected Set<Hashtag> followedHashtags;
 

@@ -1,11 +1,14 @@
 package at.jku.followingservice.controller;
 
+import at.jku.followingservice.FollowingServiceApplication;
 import at.jku.followingservice.model.FollowerCountWrapper;
 import at.jku.followingservice.model.Hashtag;
 import at.jku.followingservice.model.User;
 import at.jku.followingservice.service.FollowingService;
 import org.apache.coyote.Response;
 import org.neo4j.driver.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +19,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("following")
 public class FollowingController {
 
     final FollowingService followingService;
@@ -30,9 +35,10 @@ public class FollowingController {
     }
 
     @RequestMapping(value = "followUser/{userId}", method = RequestMethod.GET)
-    public List<User> findFollowedUsers(@PathVariable("userId") String username) {
+    public ResponseEntity<List<User>> findFollowedUsers(@PathVariable("userId") String username) {
         User user = followingService.findByUsername(username);
-        return new ArrayList<>(user.getFollowedUsers());
+        System.out.println("Service");
+        return ResponseEntity.ok(new ArrayList<>(user.getFollowedUsers()));
     }
 
     @RequestMapping(value = "followUser/{userId}", method = RequestMethod.POST)
