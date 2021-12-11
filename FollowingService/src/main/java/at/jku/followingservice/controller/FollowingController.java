@@ -4,21 +4,29 @@ import at.jku.followingservice.model.FollowerCountWrapper;
 import at.jku.followingservice.model.Hashtag;
 import at.jku.followingservice.model.User;
 import at.jku.followingservice.service.FollowingService;
+import org.apache.coyote.Response;
+import org.neo4j.driver.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class FollowingController {
 
     final FollowingService followingService;
+    //private final Driver driver;
 
     @Autowired
     public FollowingController(FollowingService followingService) {
         this.followingService = followingService;
+        //this.driver = driver;
     }
 
     @RequestMapping(value = "followUser/{userId}", method = RequestMethod.GET)
@@ -82,4 +90,71 @@ public class FollowingController {
         String correctTitle = "#" + title;
         return ResponseEntity.ok(followingService.findHashtagFollower(correctTitle).size());
     }
+
+    @RequestMapping(value = "createUserNode/{userId}", method = RequestMethod.POST)
+    private ResponseEntity<String> createUserNode(@PathVariable("userId") String username) {
+        User user = followingService.findByUsername(username);
+        if (user == null) {
+            user = new User(username);
+        }
+        followingService.save(user);
+        return ResponseEntity.ok("");
+    }
+
+    /*@RequestMapping(value = "updateUserNode/{oldUserId}", method = RequestMethod.PUT)
+    private void updateUserNode(@PathVariable("oldUserId") String oldUsername, @RequestParam String newUser) {
+        User user = followingService.findByUsername(oldUsername);
+        try (Session session = driver.session(); Transaction tx = session.beginTransaction()) {
+            try {
+                if (user != null) {
+                    user.setUsername(newUser);
+                    followingService.save(user);
+                    tx.commit();
+                }
+            } finally {
+                tx.close();
+            }
+        }
+        if (user != null) {
+            user.setUsername(newUser);
+            followingService.save(user);
+            followingService.remove(followingService.findByUsername(oldUsername));
+        }
+    }*/
+
+    @RequestMapping(value = "deleteUserNode/{userId}", method = RequestMethod.DELETE)
+    private ResponseEntity<String> deleteUserNode(@PathVariable("userId") String username) {
+        User user = followingService.findByUsername(username);
+        if (user != null) {
+            followingService.remove(user);
+        }
+        return ResponseEntity.ok("");
+    }
+
+    @RequestMapping(value = "createHashtagNodes", method = RequestMethod.POST)
+    private ResponseEntity<List<Hashtag>> createHashtagNode(@RequestBody List<Hashtag> hashtags) {
+        List<Hashtag> newlyCreatedHashtags = new LinkedList<>();
+        for (Hashtag hashtag : hashtags) {
+            if(followingService.findByTitle(hashtag.getTitle()) == null) {
+                followingService.save(hashtag);
+                newlyCreatedHashtags.add(hashtag);
+            }
+        }
+        return ResponseEntity.ok(newlyCreatedHashtags);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

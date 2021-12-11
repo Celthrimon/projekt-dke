@@ -38,6 +38,11 @@ public class FollowingServiceImpl implements FollowingService {
     }
 
     @Override
+    public Hashtag save(Hashtag hashtag) {
+        return hashtagRepository.save(hashtag);
+    }
+
+    @Override
     public User save(User user) {
         return userRepository.save(user);
     }
@@ -50,5 +55,10 @@ public class FollowingServiceImpl implements FollowingService {
     @Override
     public User unfollowHashtag(User follower, Hashtag hashtag) {
         return userRepository.unfollowHashtag(follower.getUsername(), hashtag.getTitle());
+    }
+
+    @Override
+    public void remove(User user) {
+        userRepository.delete(user);
     }
 }

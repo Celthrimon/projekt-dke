@@ -17,9 +17,13 @@ public interface FollowingService {
 
     Hashtag findByTitle(String title);
 
+    Hashtag save(Hashtag hashtag);
+
     User save(User user);
 
     User unfollowUser(User follower, User followed);
 
     User unfollowHashtag(User follower, Hashtag hashtag);
+
+    void remove(User user);
 }
