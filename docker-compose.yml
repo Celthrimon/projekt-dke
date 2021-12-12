@@ -19,14 +19,14 @@ services:
     build: 
       context: ./PostService
     depends_on:
-      - postgres_post
+      - postgrespost
     ports:
       - "8084:8080"
   userservice:
     build: 
       context: ./UserService
     depends_on:
-      - postgres_user
+      - postgresuser
     ports:
       - "8085:8080"
   postgrespost:
