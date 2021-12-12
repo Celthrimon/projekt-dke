@@ -14,15 +14,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<List<Post>> findPostByDate(LocalDateTime date);
 
-    Optional<List<Post>> findPostByHashtag(Hashtag hashtag);
+    Optional<List<Post>> findPostByHashtagsIsContaining(Hashtag hashtag);
 
     Optional<List<Post>> findPostByUserAndDate(User user, LocalDateTime date);
 
-    Optional<List<Post>> findPostByUserAndHashtag(User user, Hashtag hashtag);
+    Optional<List<Post>> findPostByUserAndHashtagsIsContaining(User user, Hashtag hashtag);
 
-    Optional<List<Post>> findPostByDateAndHashtag(LocalDateTime date, Hashtag hashtag);
+    Optional<List<Post>> findPostByDateAndHashtagsIsContaining(LocalDateTime date, Hashtag hashtag);
 
-    Optional<List<Post>> findPostByUserAndDateAndHashtag(User user, LocalDateTime date, Hashtag hashtag);
-
-
+    Optional<List<Post>> findPostByUserAndDateAndHashtagsIsContaining(User user, LocalDateTime date, Hashtag hashtag);
 }

@@ -21,33 +21,33 @@ import java.util.Optional;
 public class PostController {
     @Autowired
     private PostRepository postRepository;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private HashtagRepository hashtagRepository;
 
-    public PostController(PostRepository postRepository) {
+    public PostController(PostRepository postRepository, UserRepository userRepository, HashtagRepository hashtagRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.hashtagRepository = hashtagRepository;
     }
 
     @GetMapping("/posts")
     public List<Post> getPosts(@RequestParam("userId") Optional<Long> userId,
                                @RequestParam("date") Optional<LocalDateTime> date,
-                               @RequestParam("hashtag") Optional<Long> hashtag) {
+                               @RequestParam("hashtag") Optional<String> hashtag) {
 
         if (userId.isPresent() && date.isPresent() && hashtag.isPresent()) {
-            return postRepository.findPostByUserAndDateAndHashtag(userRepository.getById(userId.get()), date.get(), hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
+            return postRepository.findPostByUserAndDateAndHashtagsIsContaining(userRepository.getById(userId.get()), date.get(), hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
         } else if (userId.isPresent() && date.isPresent()) {
             return postRepository.findPostByUserAndDate(userRepository.getById(userId.get()), date.get()).orElse(new ArrayList<>());
         } else if (userId.isPresent() && hashtag.isPresent()) {
-            return postRepository.findPostByDateAndHashtag(date.get(), hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
+            return postRepository.findPostByUserAndHashtagsIsContaining(userRepository.getById(userId.get()), hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
         } else if (date.isPresent() && hashtag.isPresent()) {
-            return postRepository.findPostByDateAndHashtag(date.get(), hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
+            return postRepository.findPostByDateAndHashtagsIsContaining(date.get(), hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
         } else if (userId.isPresent()) {
             return postRepository.findPostByUser(userRepository.getById(userId.get())).orElse(new ArrayList<>());
         } else if (date.isPresent()) {
             return postRepository.findPostByDate(date.get()).orElse(new ArrayList<>());
-        } else return postRepository.findPostByHashtag(hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
+        } else return postRepository.findPostByHashtagsIsContaining(hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
     }
 
     @GetMapping("/mood/{userId}")

@@ -18,17 +18,15 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "posts")
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "PostHashtag",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "hashtag_id")
+            joinColumns = { @JoinColumn(name = "post_id") },
+            inverseJoinColumns = { @JoinColumn(name = "hashtag_id") }
     )
     private Set<Hashtag> hashtags = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "likedPosts")
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "PostLikedUser",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )

@@ -9,8 +9,6 @@ import java.util.Set;
 @Table(name = "HASHTAGS")
 public class Hashtag {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String title;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "hashtags")
@@ -33,19 +31,15 @@ public class Hashtag {
         if (this == o) return true;
         if (!(o instanceof Hashtag)) return false;
         Hashtag hashtag = (Hashtag) o;
-        return id.equals(hashtag.id) && title.equals(hashtag.title) && posts.equals(hashtag.posts);
+        return title.equals(hashtag.title) && posts.equals(hashtag.posts);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, posts);
-    }
+
 
     @Override
     public String toString() {
         return "Hashtag{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", posts=" + posts +
                 '}';
     }
