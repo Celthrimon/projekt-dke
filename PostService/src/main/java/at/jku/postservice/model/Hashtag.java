@@ -1,5 +1,8 @@
 package at.jku.postservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +13,7 @@ public class Hashtag {
     @Id
     private String title;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "hashtags")
     private Set<Post> posts = new HashSet<>();
 
@@ -25,8 +29,11 @@ public class Hashtag {
         newPost.getHashtags().add(this);
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public Set<Post> getPosts() {
         return posts;
     }
-
 }

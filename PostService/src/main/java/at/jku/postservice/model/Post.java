@@ -1,5 +1,10 @@
 package at.jku.postservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -13,10 +18,12 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String content, emoji;
+    private String content;
+    private String emoji;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -24,6 +31,7 @@ public class Post {
             inverseJoinColumns = { @JoinColumn(name = "hashtag_id") }
     )
     private Set<Hashtag> hashtags = new HashSet<>();
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -75,6 +83,14 @@ public class Post {
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getEmoji() {
+        return emoji;
     }
 
     @Override

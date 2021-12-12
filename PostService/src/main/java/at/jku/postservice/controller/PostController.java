@@ -3,6 +3,7 @@ package at.jku.postservice.controller;
 import at.jku.postservice.exception.InvalidArgumentException;
 import at.jku.postservice.exception.ResourceNotFoundException;
 import at.jku.postservice.model.Post;
+import at.jku.postservice.model.User;
 import at.jku.postservice.repository.HashtagRepository;
 import at.jku.postservice.repository.PostRepository;
 import at.jku.postservice.repository.UserRepository;
@@ -30,8 +31,8 @@ public class PostController {
         this.hashtagRepository = hashtagRepository;
     }
 
-    @GetMapping("posts")
-    public List<Post> getPosts(@RequestParam("userId") Optional<Long> userId,
+    @GetMapping("/posts")
+    public List<Post> getPosts(@RequestParam("userId") Optional<String> userId,
                                @RequestParam("date") Optional<LocalDateTime> date,
                                @RequestParam("hashtag") Optional<String> hashtag) {
 
@@ -48,6 +49,16 @@ public class PostController {
         } else if (date.isPresent()) {
             return postRepository.findPostByDate(date.get()).orElse(new ArrayList<>());
         } else return postRepository.findPostByHashtagsIsContaining(hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
+    }
+
+    @GetMapping("/user/{userId}")
+    public User getUser(@PathVariable String userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("No user exits with id:" + userId));
+    }
+
+    @GetMapping("/post/{postId}")
+    public Post getUser(@PathVariable long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("No post exits with id:" + postId));
     }
 
     @GetMapping("/mood/{userId}")
@@ -73,7 +84,7 @@ public class PostController {
     }
 
     @PostMapping("/like/{postId}")
-    public void likePost(@PathVariable long postId, @RequestParam("user") long userId) {
+    public void likePost(@PathVariable long postId, @RequestParam("user") String userId) {
         if(ObjectUtils.isEmpty(postRepository.getById(postId)))
             throw new ResourceNotFoundException("No such post found (id: " + postId + " )");
 

@@ -4,6 +4,7 @@ import at.jku.postservice.model.Hashtag;
 import at.jku.postservice.model.Post;
 import at.jku.postservice.model.User;
 import at.jku.postservice.repository.HashtagRepository;
+import at.jku.postservice.repository.PostRepository;
 import at.jku.postservice.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @SpringBootApplication
 public class PostServiceApplication {
@@ -21,7 +21,7 @@ public class PostServiceApplication {
     }
 
     @Bean
-    CommandLineRunner demo(UserRepository userRepository, HashtagRepository hashtagRepository) {
+    CommandLineRunner demo(PostRepository postRepository, UserRepository userRepository, HashtagRepository hashtagRepository) {
         return args -> {
             userRepository.deleteAll();
 
@@ -41,7 +41,8 @@ public class PostServiceApplication {
             hashtagRepository.save(inflation);
             hashtagRepository.save(corona);
 
-            Post post1;
+            Post post1 = new Post("content", userRepository.findById(mario.getUsername()).get(), LocalDateTime.now());
+            postRepository.save(post1);
         };
     }
 }
