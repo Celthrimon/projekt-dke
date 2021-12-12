@@ -37,6 +37,12 @@ public class Post {
     public Post() {
     }
 
+    public Post(String content, User user, LocalDateTime date) {
+        this.content = content;
+        this.user = user;
+        this.date = date;
+    }
+
     public void addHashtag(Hashtag newHashtag){
         hashtags.add(newHashtag);
         newHashtag.getPosts().add(this);

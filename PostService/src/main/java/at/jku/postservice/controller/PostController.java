@@ -30,7 +30,7 @@ public class PostController {
         this.hashtagRepository = hashtagRepository;
     }
 
-    @GetMapping("/posts")
+    @GetMapping("posts")
     public List<Post> getPosts(@RequestParam("userId") Optional<Long> userId,
                                @RequestParam("date") Optional<LocalDateTime> date,
                                @RequestParam("hashtag") Optional<String> hashtag) {

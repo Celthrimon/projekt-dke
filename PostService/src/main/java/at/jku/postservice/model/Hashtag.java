@@ -2,7 +2,6 @@ package at.jku.postservice.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -17,6 +16,10 @@ public class Hashtag {
     public Hashtag() {
     }
 
+    public Hashtag(String title) {
+        this.title = title;
+    }
+
     public void addPost(Post newPost){
         posts.add(newPost);
         newPost.getHashtags().add(this);
@@ -26,21 +29,4 @@ public class Hashtag {
         return posts;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Hashtag)) return false;
-        Hashtag hashtag = (Hashtag) o;
-        return title.equals(hashtag.title) && posts.equals(hashtag.posts);
-    }
-
-
-
-    @Override
-    public String toString() {
-        return "Hashtag{" +
-                "title='" + title + '\'' +
-                ", posts=" + posts +
-                '}';
-    }
 }
