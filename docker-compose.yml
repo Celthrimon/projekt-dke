@@ -5,11 +5,15 @@ services:
       context: ./FollowingService
     ports:
       - "8081:8080"
+    depends_on:
+      - neofollowing
   logservice:
     build: 
       context: ./LogService
     ports:
       - "8082:8080"
+    depends_on:
+      - mongolog
   notificationservice:
     build: 
       context: ./NotificationService
@@ -49,3 +53,22 @@ services:
       POSTGRES_DB: user
     ports:
       - "5433:5432"
+  mongolog:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - "27017:2017"
+  neofollowing:
+    image: neo4j
+    restart: always
+    environment:
+      NEO4J_AUTH: neo4j/streams
+      NEO4J_dbms_logs_debug_level: DEBUG
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
+
