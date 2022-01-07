@@ -14,11 +14,19 @@ import java.util.stream.Collectors;
 @Node
 public class User {
 
+    @JsonIgnore
+    @Relationship(type = "FOLLOWS")
+    protected Set<User> followedUsers;
+    @JsonIgnore
+    @Relationship(type = "FOLLOWS")
+    protected Set<Hashtag> followedHashtags;
+
+    ;
     @Id
     private String username;
 
     private User() {
-    };
+    }
 
     public User(String username) {
         this.username = username;
@@ -32,14 +40,6 @@ public class User {
         this.username = username;
     }
 
-    @JsonIgnore
-    @Relationship(type = "FOLLOWS")
-    protected Set<User> followedUsers;
-
-    @JsonIgnore
-    @Relationship(type = "FOLLOWS")
-    protected Set<Hashtag> followedHashtags;
-
     public void followUser(User user) {
         if (followedUsers == null)
             followedUsers = new HashSet<>();
@@ -47,7 +47,7 @@ public class User {
     }
 
     public void followHashtag(Hashtag hashtag) {
-        if(followedHashtags == null)
+        if (followedHashtags == null)
             followedHashtags = new HashSet<>();
         followedHashtags.add(hashtag);
     }
@@ -64,7 +64,7 @@ public class User {
     public String toString() {
         return this.username + "'s followers: "
                 + Optional.ofNullable(this.followedUsers).orElse(
-                Collections.emptySet()).stream()
+                        Collections.emptySet()).stream()
                 .map(User::getUsername)
                 .collect(Collectors.toList());
     }

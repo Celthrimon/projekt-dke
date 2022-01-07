@@ -1,6 +1,5 @@
 package at.jku.followingservice.repository;
 
-import at.jku.followingservice.model.Hashtag;
 import at.jku.followingservice.model.User;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;

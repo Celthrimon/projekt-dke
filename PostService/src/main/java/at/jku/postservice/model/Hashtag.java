@@ -1,7 +1,6 @@
 package at.jku.postservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -24,7 +23,7 @@ public class Hashtag {
         this.title = title;
     }
 
-    public void addPost(Post newPost){
+    public void addPost(Post newPost) {
         posts.add(newPost);
         newPost.getHashtags().add(this);
     }

@@ -1,25 +1,16 @@
 package at.jku.followingservice.controller;
 
-import at.jku.followingservice.FollowingServiceApplication;
 import at.jku.followingservice.model.FollowerCountWrapper;
 import at.jku.followingservice.model.Hashtag;
 import at.jku.followingservice.model.User;
 import at.jku.followingservice.service.FollowingService;
-import org.apache.coyote.Response;
-import org.neo4j.driver.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.core.Neo4jTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("following")
@@ -141,7 +132,7 @@ public class FollowingController {
     private ResponseEntity<List<Hashtag>> createHashtagNode(@RequestBody List<Hashtag> hashtags) {
         List<Hashtag> newlyCreatedHashtags = new LinkedList<>();
         for (Hashtag hashtag : hashtags) {
-            if(followingService.findByTitle(hashtag.getTitle()) == null) {
+            if (followingService.findByTitle(hashtag.getTitle()) == null) {
                 followingService.save(hashtag);
                 newlyCreatedHashtags.add(hashtag);
             }

@@ -1,10 +1,5 @@
 package at.jku.postservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -22,13 +17,13 @@ public class Post {
     private String emoji;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private User author;
 
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            joinColumns = { @JoinColumn(name = "post_id") },
-            inverseJoinColumns = { @JoinColumn(name = "hashtag_id") }
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "hashtag_id")}
     )
     private Set<Hashtag> hashtags = new HashSet<>();
 
@@ -45,18 +40,18 @@ public class Post {
     public Post() {
     }
 
-    public Post(String content, User user, LocalDateTime date) {
+    public Post(String content, User author, LocalDateTime date) {
         this.content = content;
-        this.user = user;
+        this.author = author;
         this.date = date;
     }
 
-    public void addHashtag(Hashtag newHashtag){
+    public void addHashtag(Hashtag newHashtag) {
         hashtags.add(newHashtag);
         newHashtag.getPosts().add(this);
     }
 
-    public void addLike(User newUser){
+    public void addLike(User newUser) {
         likedBy.add(newUser);
         newUser.getLikedPosts().add(this);
     }
@@ -69,12 +64,12 @@ public class Post {
         return likedBy;
     }
 
-    public User getUser() {
-        return user;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getContent() {
@@ -98,12 +93,12 @@ public class Post {
         if (this == o) return true;
         if (!(o instanceof Post)) return false;
         Post post = (Post) o;
-        return id == post.id && content.equals(post.content) && Objects.equals(emoji, post.emoji) && user.equals(post.user) && hashtags.equals(post.hashtags) && likedBy.equals(post.likedBy) && date.equals(post.date);
+        return id == post.id && content.equals(post.content) && Objects.equals(emoji, post.emoji) && author.equals(post.author) && hashtags.equals(post.hashtags) && likedBy.equals(post.likedBy) && date.equals(post.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, emoji, user, hashtags, likedBy, date);
+        return Objects.hash(id, content, emoji, author, hashtags, likedBy, date);
     }
 
     @Override
@@ -112,7 +107,7 @@ public class Post {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", emoji='" + emoji + '\'' +
-                ", user=" + user +
+                ", author=" + author +
                 ", hashtags=" + hashtags +
                 ", likedBy=" + likedBy +
                 ", date=" + date +

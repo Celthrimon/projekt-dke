@@ -1,9 +1,7 @@
 package at.jku.postservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,10 +12,10 @@ import java.util.Set;
 @JsonIgnoreProperties(value = "hibernateLazyInitializer")
 public class User {
     @Id
-    private String username;
+    private String userName;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     private Set<Post> posts = new HashSet<>();
 
     @JsonIgnore
@@ -27,12 +25,12 @@ public class User {
     public User() {
     }
 
-    public User(String username) {
-        this.username = username;
+    public User(String userName) {
+        this.userName = userName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
     public Set<Post> getPosts() {
@@ -43,12 +41,12 @@ public class User {
         return likedPosts;
     }
 
-    public void post(Post newPost){
-        newPost.setUser(this);
+    public void post(Post newPost) {
+        newPost.setAuthor(this);
         posts.add(newPost);
     }
 
-    public void like(Post newPost){
+    public void like(Post newPost) {
         likedPosts.add(newPost);
         newPost.getLikedBy().add(this);
     }

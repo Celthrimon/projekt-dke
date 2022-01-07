@@ -2,8 +2,6 @@ package at.jku.followingservice.service;
 
 import at.jku.followingservice.model.Hashtag;
 import at.jku.followingservice.model.User;
-import at.jku.followingservice.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

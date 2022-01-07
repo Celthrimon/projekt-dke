@@ -41,7 +41,7 @@ public class PostServiceApplication {
             hashtagRepository.save(inflation);
             hashtagRepository.save(corona);
 
-            Post post1 = new Post("content", userRepository.findById(mario.getUsername()).get(), LocalDateTime.now());
+            Post post1 = new Post("content", userRepository.findById(mario.getUserName()).get(), LocalDateTime.now());
             postRepository.save(post1);
         };
     }
