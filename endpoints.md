@@ -123,6 +123,12 @@ Bei jedem Request auf den Following-Service, muss der JWT im Header mitgegeben w
 * Path: `/login` Body: `JSONObject<Credentials>`
 * Return: JSON Web Token
 
+### login
+
+* GET
+* Path: `/login` Body: `JWT`
+* Return: isvalid : true/false
+
 ### refresh
 
 * POST
