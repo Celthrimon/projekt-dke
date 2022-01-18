@@ -62,7 +62,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: mongo
       MONGO_INITDB_ROOT_PASSWORD: secret
     ports:
-      - "27017:2017"
+      - "27017:27017"
   neofollowing:
     image: neo4j
     restart: always
