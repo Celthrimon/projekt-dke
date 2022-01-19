@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("myMood/posting")
+@RequestMapping("mymood/posting")
 public class PostController {
     private final PostRepository postRepository;
     private final UserRepository userRepository;

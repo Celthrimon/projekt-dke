@@ -10,6 +10,7 @@ import java.util.Base64;
 import java.util.List;
 
 @RestController
+@RequestMapping("mymood/user")
 public class UserController {
 
     private final UserRepository repository;

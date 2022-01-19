@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RestController
-@RequestMapping("following")
+@RequestMapping("mymood/following")
 public class FollowingController {
 
     final FollowingService followingService;
