@@ -10,17 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Optional<List<Post>> findPostByAuthor(User author);
+    Optional<List<Post>> findPostByDateBetweenOrderByDate(LocalDateTime dateStart, LocalDateTime dateEnd);
 
-    Optional<List<Post>> findPostByDate(LocalDateTime date);
+    Optional<List<Post>> findPostByAuthorAndDateBetweenOrderByDate(User author, LocalDateTime dateStart, LocalDateTime dateEnd);
 
-    Optional<List<Post>> findPostByHashtagsIsContaining(Hashtag hashtag);
+    Optional<List<Post>> findPostByHashtagsIsContainingAndDateBetweenOrderByDate(Hashtag hashtag, LocalDateTime dateStart, LocalDateTime dateEnd);
 
-    Optional<List<Post>> findPostByAuthorAndDate(User author, LocalDateTime date);
-
-    Optional<List<Post>> findPostByAuthorAndHashtagsIsContaining(User author, Hashtag hashtag);
-
-    Optional<List<Post>> findPostByDateAndHashtagsIsContaining(LocalDateTime date, Hashtag hashtag);
-
-    Optional<List<Post>> findPostByAuthorAndDateAndHashtagsIsContaining(User author, LocalDateTime date, Hashtag hashtag);
+    Optional<List<Post>> findPostByAuthorAndHashtagsIsContainingAndDateBetweenOrderByDate(User author, Hashtag hashtag, LocalDateTime dateStart, LocalDateTime dateEnd);
 }

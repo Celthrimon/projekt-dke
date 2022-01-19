@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("posting")
 public class PostController {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -29,55 +30,76 @@ public class PostController {
         this.hashtagRepository = hashtagRepository;
     }
 
-    // TODO: change userId to userName in general
-
     /**
      * gets posts with optional properties
      *
-     * @param userId  user id of the user that created the posts
-     * @param date    the date when these posts where created
+     * @param userName username of the user that created the posts
+     * @param dateStartOptional the starting date when these posts where created
+     *                          --> if not defined: set to the current date
+     * @param dateEndOptional the ending date when these posts where created
+     *                        --> if not defined: set to 1 month difference to the starting date
      * @param hashtag the hashtags the post must contain
      *
      * @return the posts with the required properties
      */
-    @GetMapping("/posts")
-    public List<Post> getPosts(@RequestParam("userId") Optional<String> userId,
-                               @RequestParam("date") Optional<LocalDateTime> date,
+    @RequestMapping(value = "posts", method = RequestMethod.GET)
+    public List<Post> getPosts(@RequestParam("userName") Optional<String> userName,
+                               @RequestParam("dateStart") Optional<LocalDateTime> dateStartOptional,
+                               @RequestParam("dateEnd") Optional<LocalDateTime> dateEndOptional,
                                @RequestParam("hashtag") Optional<String> hashtag) {
 
-        if (userId.isPresent() && date.isPresent() && hashtag.isPresent()) {
-            return postRepository.findPostByAuthorAndDateAndHashtagsIsContaining(userRepository.getById(userId.get()), date.get(), hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
-        } else if (userId.isPresent() && date.isPresent()) {
-            return postRepository.findPostByAuthorAndDate(userRepository.getById(userId.get()), date.get()).orElse(new ArrayList<>());
-        } else if (userId.isPresent() && hashtag.isPresent()) {
-            return postRepository.findPostByAuthorAndHashtagsIsContaining(userRepository.getById(userId.get()), hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
-        } else if (date.isPresent() && hashtag.isPresent()) {
-            return postRepository.findPostByDateAndHashtagsIsContaining(date.get(), hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
-        } else if (userId.isPresent()) {
-            return postRepository.findPostByAuthor(userRepository.getById(userId.get())).orElse(new ArrayList<>());
-        } else if (date.isPresent()) {
-            return postRepository.findPostByDate(date.get()).orElse(new ArrayList<>());
-        } else
-            return postRepository.findPostByHashtagsIsContaining(hashtagRepository.getById(hashtag.get())).orElse(new ArrayList<>());
+        LocalDateTime dateStart, dateEnd;
+
+        if(!dateStartOptional.isPresent() || dateStartOptional.isEmpty()) dateStart = LocalDateTime.now();
+        else dateStart = dateEndOptional.get();
+        if(!dateEndOptional.isPresent() || dateEndOptional.isEmpty()) dateEnd = dateStart.plusMonths(1);
+        else dateEnd = dateEndOptional.get();
+
+
+        if(userName.isPresent() && hashtag.isPresent()){
+            return postRepository.findPostByAuthorAndHashtagsIsContainingAndDateBetweenOrderByDate(
+                    userRepository.getById(userName.get()),
+                    hashtagRepository.getById(hashtag.get()),
+                    dateStart,
+                    dateEnd
+            ).orElse(new ArrayList<>());
+        } else if(userName.isPresent()) {
+            return postRepository.findPostByAuthorAndDateBetweenOrderByDate(
+                    userRepository.getById(userName.get()),
+                    dateStart,
+                    dateEnd
+            ).orElse(new ArrayList<>());
+        } else if(hashtag.isPresent()){
+            return postRepository.findPostByHashtagsIsContainingAndDateBetweenOrderByDate(
+                    hashtagRepository.getById(hashtag.get()),
+                    dateStart,
+                    dateEnd
+            ).orElse(new ArrayList<>());
+        } else {
+            return postRepository.findPostByDateBetweenOrderByDate(
+                    dateStart,
+                    dateEnd
+            ).orElse(new ArrayList<>());
+        }
     }
 
     // TODO: create mood
-    @GetMapping("/mood/{userId}")
-    public void getMood(@PathVariable Long userId) {
+    @RequestMapping(value = "mood/{userName}", method = RequestMethod.GET)
+    public void getMood(@PathVariable Long userName) {
 
     }
 
     /**
      * create a new post
      *
-     * @param newPost the post with its required parameters (userId: String, date: LocalDateTime, content: String
+     * @param newPost the post with its required parameters (userName: String, date: LocalDateTime, content: String
      *
      * @return HTTP CREATED response if the post was created else an exception is thrown
      */
-    @PostMapping("/post")
+    @RequestMapping(value = "post", method = RequestMethod.POST)
     public ResponseEntity<Post> newPost(@RequestBody Post newPost) {
         if (ObjectUtils.isEmpty(newPost.getAuthor())) {
-            throw new InvalidArgumentException("userId is required!");
+            throw new InvalidArgumentException("userName is required!");
         }
 
         if (ObjectUtils.isEmpty(newPost.getDate())) {
@@ -95,19 +117,19 @@ public class PostController {
      * user likes a post
      *
      * @param postId id of the post to be liked
-     * @param userId id of the user that likes the post
+     * @param userName id of the user that likes the post
      */
-    @PostMapping("/like/{postId}")
-    public void likePost(@PathVariable long postId, @RequestParam("user") String userId) {
+    @RequestMapping(value = "like/{postId}", method = RequestMethod.POST)
+    public void likePost(@PathVariable long postId, @RequestParam("user") String userName) {
         if (ObjectUtils.isEmpty(postRepository.getById(postId)))
             throw new ResourceNotFoundException("No such post found (id: " + postId + " )");
 
-        if (ObjectUtils.isEmpty(userId)) throw new InvalidArgumentException("userId is required!");
+        if (ObjectUtils.isEmpty(userName)) throw new InvalidArgumentException("userName is required!");
 
-        if (ObjectUtils.isEmpty(userRepository.getById(userId)))
+        if (ObjectUtils.isEmpty(userRepository.getById(userName)))
             throw new ResourceNotFoundException("No such user found (id: " + postId + " )");
 
-        postRepository.getById(postId).addLike(userRepository.getById(userId));
+        postRepository.getById(postId).addLike(userRepository.getById(userName));
     }
 
     /**
@@ -117,7 +139,7 @@ public class PostController {
      *
      * @return HTTP OK response if the post was deleted else an exception is thrown
      */
-    @DeleteMapping("/post/{postId}")
+    @RequestMapping(value = "post/{postId}", method = RequestMethod.DELETE)
     public ResponseEntity.BodyBuilder deletePost(@PathVariable Long postId) {
         if (!postRepository.findById(postId).isPresent()) {
             throw new ResourceNotFoundException("No such post found (id: " + postId + " )");
@@ -127,19 +149,22 @@ public class PostController {
         return ResponseEntity.ok();
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
+
     //TODO: remove testing APIs
 
     /**
      * gets a user
      * ## for testing purposes ##
      *
-     * @param userId the users id
+     * @param userName the users name
      *
      * @return the required user
      */
-    @GetMapping("/user/{userId}")
-    public User getUser(@PathVariable String userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("No user exits with id:" + userId));
+    @GetMapping("/user/{userName}")
+    public User getUser(@PathVariable String userName) {
+        return userRepository.findById(userName).orElseThrow(() -> new ResourceNotFoundException("No user exits with id:" + userName));
     }
 
     /**
