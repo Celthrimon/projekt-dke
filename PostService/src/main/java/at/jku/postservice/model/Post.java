@@ -56,6 +56,10 @@ public class Post {
         newUser.getLikedPosts().add(this);
     }
 
+    public void removeLike(User user) {
+        if (likedBy.contains(user)) likedBy.remove(user);
+    }
+
     public Set<Hashtag> getHashtags() {
         return hashtags;
     }
