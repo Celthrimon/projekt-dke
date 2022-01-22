@@ -55,25 +55,24 @@ public class PostController {
         if (!dateEndOptional.isPresent() || dateEndOptional.isEmpty()) dateEnd = dateStart.minusMonths(1);
         else dateEnd = dateEndOptional.get();
 
-
         if (userName.isPresent() && hashtag.isPresent()) {
             return postRepository.findPostByAuthorAndHashtagsIsContainingAndDateBetweenOrderByDate(
                     userRepository.findUserByUserName(userName.get()),
                     hashtagRepository.getById(hashtag.get()),
-                    dateStart,
-                    dateEnd
+                    dateEnd,
+                    dateStart
             ).orElse(new ArrayList<>());
         } else if (userName.isPresent()) {
             return postRepository.findPostByAuthorAndDateBetweenOrderByDate(
                     userRepository.findUserByUserName(userName.get()),
-                    dateStart,
-                    dateEnd
+                    dateEnd,
+                    dateStart
             ).orElse(new ArrayList<>());
         } else if (hashtag.isPresent()) {
             return postRepository.findPostByHashtagsIsContainingAndDateBetweenOrderByDate(
                     hashtagRepository.getById(hashtag.get()),
-                    dateStart,
-                    dateEnd
+                    dateEnd,
+                    dateStart
             ).orElse(new ArrayList<>());
         } else {
             return postRepository.findPostByDateBetweenOrderByDate(
@@ -83,7 +82,6 @@ public class PostController {
         }
     }
 
-    // TODO: create mood
     @RequestMapping(value = "mood/{userName}", method = RequestMethod.GET)
     public String getMood(@PathVariable String userName) {
         if (userName.isEmpty() || userName.isBlank()) throw new InvalidArgumentException("userName is required!");
