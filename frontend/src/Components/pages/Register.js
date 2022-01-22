@@ -19,16 +19,37 @@ const theme = createTheme();
 export function Register() {
 
     const history = useHistory();
+    const [existsUser, setExistsUser] =  React.useState(false);
+    const url = "/mymood/user/";
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        username: data.get('userName'),
+        email: data.get('email'),
+        password: data.get('password')
+      })
+    }
+    fetch(url, requestOptions).then(async response => {
+      const user = response.json();
+
+      if(!response.ok) {
+        const error = response.status;
+        setExistsUser(true);
+        return Promise.reject(error);
+      } else {
+        console.log(user);
+        setExistsUser(false);
+        history.push('/view');
+      }
+    })
+    .catch(error => {
+      console.error("There was am error");
     });
-    history.push('/view');
   };
 
   return (
@@ -51,30 +72,20 @@ export function Register() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
+              <Grid item xs={12}>
+                <TextField 
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  id="userName"
+                  label="Username"
+                  name="userName"
+                  autoComplete="user-name"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  optional
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -100,6 +111,12 @@ export function Register() {
                 />
               </Grid>
             </Grid>
+            {
+              existsUser === true &&
+              <Typography variant="caption" display="block" style={{color: "red"}} gutterBottom>
+                Username already exists!
+              </Typography>
+            }
             <Button
               type="submit"
               fullWidth
