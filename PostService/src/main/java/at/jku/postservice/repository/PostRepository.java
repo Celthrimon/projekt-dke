@@ -17,4 +17,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<List<Post>> findPostByHashtagsIsContainingAndDateBetweenOrderByDate(Hashtag hashtag, LocalDateTime dateStart, LocalDateTime dateEnd);
 
     Optional<List<Post>> findPostByAuthorAndHashtagsIsContainingAndDateBetweenOrderByDate(User author, Hashtag hashtag, LocalDateTime dateStart, LocalDateTime dateEnd);
+
+    Optional<Post> findPostByAuthorAndMoodIsNotNullOrderByDate(User author);
 }

@@ -85,8 +85,15 @@ public class PostController {
 
     // TODO: create mood
     @RequestMapping(value = "mood/{userName}", method = RequestMethod.GET)
-    public void getMood(@PathVariable Long userName) {
+    public String getMood(@PathVariable String userName) {
+        if (userName.isEmpty() || userName.isBlank()) throw new InvalidArgumentException("userName is required!");
 
+        User user = userRepository.getById(userName);
+
+        if (ObjectUtils.isEmpty(user))
+            throw new ResourceNotFoundException("No such user found (id: " + userName + " )");
+
+        return postRepository.findPostByAuthorAndMoodIsNotNullOrderByDate(user).get().getMood();
     }
 
     /**
@@ -121,6 +128,8 @@ public class PostController {
      */
     @RequestMapping(value = "like/{postId}", method = RequestMethod.POST)
     public void likePost(@PathVariable long postId, @RequestParam("userName") String userName) {
+        if (ObjectUtils.isEmpty(postId)) throw new InvalidArgumentException("postId is required!");
+
         Post post = postRepository.getById(postId);
 
         if (ObjectUtils.isEmpty(post))
@@ -147,6 +156,8 @@ public class PostController {
      */
     @RequestMapping(value = "unlike/{postId}", method = RequestMethod.POST)
     public void unlikePost(@PathVariable long postId, @RequestParam("userName") String userName) {
+        if (ObjectUtils.isEmpty(postId)) throw new InvalidArgumentException("postId is required!");
+
         Post post = postRepository.getById(postId);
 
         if (ObjectUtils.isEmpty(post))
@@ -174,6 +185,8 @@ public class PostController {
      */
     @RequestMapping(value = "post/{postId}", method = RequestMethod.DELETE)
     public ResponseEntity.BodyBuilder deletePost(@PathVariable Long postId) {
+        if (ObjectUtils.isEmpty(postId)) throw new InvalidArgumentException("postId is required!");
+
         if (!postRepository.findById(postId).isPresent())
             throw new ResourceNotFoundException("No such post found (id: " + postId + " )");
 
