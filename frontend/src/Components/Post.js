@@ -40,7 +40,7 @@ export default function Post({ userName, date, content, liked = false, currentUs
   const minutes = date.split("T")[1].split(":")[1];
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ m : 2}}>
       <CardHeader
         avatar={
           <CardActionArea onClick={() => console.log("go to author profile")}>

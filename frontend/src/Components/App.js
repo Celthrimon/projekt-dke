@@ -19,7 +19,7 @@ function App() {
     date: "2022-01-18T16:13:57.331928",
   }
 
-  const [username, setUserName] = React.useState('Mario');
+  const [username, setUserName] = React.useState('Felix');
 
   return (
     <div className="App">
@@ -29,7 +29,7 @@ function App() {
             <Login changeUserName={username => setUserName(username)}></Login>
           </Route>
           <Route path="/register" exact>
-            <Register changeUserName={username => setUserName(username)}></Register>
+            <Register></Register>
           </Route>
           <Route path="/view">
             <PrimarySearchAppBar></PrimarySearchAppBar>
