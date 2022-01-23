@@ -2,6 +2,7 @@ package at.jku.postservice.controller;
 
 import at.jku.postservice.exception.InvalidArgumentException;
 import at.jku.postservice.exception.ResourceNotFoundException;
+import at.jku.postservice.model.Hashtag;
 import at.jku.postservice.model.Post;
 import at.jku.postservice.model.User;
 import at.jku.postservice.repository.HashtagRepository;
@@ -115,6 +116,14 @@ public class PostController {
             throw new InvalidArgumentException("content is required!");
         }
 
+        User user = userRepository.getById(newPost.getAuthor().getUserName());
+        if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(newPost.getAuthor().getUserName()));
+
+        for(Hashtag h: newPost.getHashtags()){
+            Hashtag hashtag = hashtagRepository.getById(h.getTitle());
+            if (ObjectUtils.isEmpty(hashtag)) hashtagRepository.save(new Hashtag(h.getTitle()));
+        }
+
         return new ResponseEntity<>(postRepository.save(newPost), HttpStatus.CREATED);
     }
 
@@ -129,16 +138,13 @@ public class PostController {
         if (ObjectUtils.isEmpty(postId)) throw new InvalidArgumentException("postId is required!");
 
         Post post = postRepository.getById(postId);
-
         if (ObjectUtils.isEmpty(post))
             throw new ResourceNotFoundException("No such post found (id: " + postId + " )");
 
         if (userName.isEmpty() || userName.isBlank()) throw new InvalidArgumentException("userName is required!");
 
         User user = userRepository.getById(userName);
-
-        if (ObjectUtils.isEmpty(user))
-            throw new ResourceNotFoundException("No such user found (id: " + userName + " )");
+        if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(userName));
 
         post.addLike(user);
 
@@ -159,16 +165,13 @@ public class PostController {
         if (ObjectUtils.isEmpty(postId)) throw new InvalidArgumentException("postId is required!");
 
         Post post = postRepository.getById(postId);
-
         if (ObjectUtils.isEmpty(post))
             throw new ResourceNotFoundException("No such post found (id: " + postId + " )");
 
         if (userName.isEmpty() || userName.isBlank()) throw new InvalidArgumentException("userName is required!");
 
         User user = userRepository.getById(userName);
-
-        if (ObjectUtils.isEmpty(user))
-            throw new ResourceNotFoundException("No such user found (id: " + userName + " )");
+        if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(userName));
 
         post.removeLike(user);
 
@@ -195,5 +198,9 @@ public class PostController {
         postRepository.deleteById(postId);
 
         return ResponseEntity.ok();
+    }
+
+    private void createUser(String userName){
+        userRepository.save(new User(userName));
     }
 }

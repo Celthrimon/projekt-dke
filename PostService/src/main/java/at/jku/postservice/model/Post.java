@@ -14,7 +14,6 @@ public class Post {
     private long id;
 
     private String content;
-    private String emoji;
     private String mood;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,12 +40,10 @@ public class Post {
     public Post() {
     }
 
-    public Post(String content, User author, String emoji, LocalDateTime date, String mood) {
+    public Post(String content, User author, LocalDateTime date, String mood) {
         this.content = content;
         this.author = author;
-        this.emoji = emoji;
         this.date = date;
-        this.mood = mood;
     }
 
     public void addHashtag(Hashtag newHashtag) {
@@ -91,10 +88,6 @@ public class Post {
         return id;
     }
 
-    public String getEmoji() {
-        return emoji;
-    }
-
     public String getMood() {
         return mood;
     }
@@ -104,12 +97,12 @@ public class Post {
         if (this == o) return true;
         if (!(o instanceof Post)) return false;
         Post post = (Post) o;
-        return id == post.id && mood == post.mood && content.equals(post.content) && Objects.equals(emoji, post.emoji) && author.equals(post.author) && Objects.equals(hashtags, post.hashtags) && Objects.equals(likedBy, post.likedBy) && date.equals(post.date);
+        return id == post.id && Objects.equals(content, post.content) && Objects.equals(mood, post.mood) && author.equals(post.author) && Objects.equals(hashtags, post.hashtags) && Objects.equals(likedBy, post.likedBy) && date.equals(post.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, emoji, mood, author, hashtags, likedBy, date);
+        return Objects.hash(id, content, mood, author, hashtags, likedBy, date);
     }
 
     @Override
@@ -117,8 +110,7 @@ public class Post {
         return "Post{" +
                 "id=" + id +
                 ", content='" + content + '\'' +
-                ", emoji='" + emoji + '\'' +
-                ", mood=" + mood +
+                ", mood='" + mood + '\'' +
                 ", author=" + author +
                 ", hashtags=" + hashtags +
                 ", likedBy=" + likedBy +
