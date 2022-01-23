@@ -8,6 +8,17 @@ import * as React from 'react';
 
 function App() {
 
+  const post ={
+    id: 3,
+    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi enim distinctio, dolore eius voluptatibus excepturi neque? Ipsa quam excepturi vel!",
+    emoji: "",
+    mood: "",
+    author: { userName: "Mario" },
+    hashtags: [],
+    likedBy: [],
+    date: "2022-01-18T16:13:57.331928",
+  }
+
   const [username, setUserName] = React.useState('Mario');
 
   return (
@@ -24,6 +35,14 @@ function App() {
             <PrimarySearchAppBar></PrimarySearchAppBar>
             <br></br>
             <Userpanel user={username} />
+
+            <Post
+              userName={post.author.userName}
+              content={post.content}
+              date={post.date}
+              liked={true}
+              currentUser={username}
+            />
           </Route>
         </Switch>
       </Router>

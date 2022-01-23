@@ -49,7 +49,7 @@ export function Register(props) {
       }
     })
     .catch(error => {
-      console.error("There was am error");
+      console.error("There was an error");
     });
   };
 

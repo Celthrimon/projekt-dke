@@ -1,9 +1,7 @@
 import User from './User'
 import {useState, useEffect} from 'react';
 import PersonIcon from '@mui/icons-material/Person';
-
 import { Paper, Stack } from '@mui/material';
-import UserBox from './UserBox';
 
 function Userpanel({ user }) {
     const url = "/mymood/following/followUser/"+user+"/";
