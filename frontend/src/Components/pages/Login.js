@@ -17,7 +17,7 @@ import { useHistory} from 'react-router-dom';
 
 const theme = createTheme();
 
-export function Login( {sendDataToApp} ) {
+export function Login(props) {
 
   const history = useHistory();
   const url = "/mymood/user/login";
@@ -48,7 +48,7 @@ export function Login( {sendDataToApp} ) {
         console.log(token);
         setLoggedIn(true);
         console.log(loggedIn);
-        sendDataToApp(data.get('userName'));
+        props.changeUserName(data.get('userName'));
         history.push('/view');
       }
     })
