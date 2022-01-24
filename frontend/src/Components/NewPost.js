@@ -54,6 +54,30 @@ export default function NewPost({ currentUser }) {
                 sx={{ width: "15%", height: "56px", marginTop:"-2px" }} 
                 variant="outlined"
                 onClick={ ()=>{
+                    console.log(post.content);
+                    if(post.content.includes('#')) {
+                        var words = [];
+                        var hashtags = '[\n';
+                        words = post.content.split(" ");
+                        for(var i = 0; i < words.length; i++) {
+                            if(words[i].startsWith('#')) {
+                                var to_append = words[i];
+                                if(i+1!=words.length)
+                                    hashtags += '{\"title\": \"'+to_append+'\"},\n';
+                                else
+                                    hashtags += '{\"title\": \"'+to_append+'\"}\n';
+                            }
+                        }
+                        hashtags += ']';
+                        const hashtagUrl = "mymood/following/createHashtagNodes";
+                        fetch(hashtagUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: hashtags
+                        })
+                    }
 
                     fetch(createURL, {
                         method: 'POST',

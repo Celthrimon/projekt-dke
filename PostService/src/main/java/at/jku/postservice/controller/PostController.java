@@ -71,7 +71,7 @@ public class PostController {
             ).orElse(new ArrayList<>()));
         } else if (hashtag.isPresent()) {
             return ResponseEntity.ok(postRepository.findPostByHashtagsIsContainingAndDateBetweenOrderByDate(
-                    hashtagRepository.getById(hashtag.get()),
+                    hashtagRepository.findHashtagByTitle("#" + hashtag.get()),
                     dateEnd,
                     dateStart
             ).orElse(new ArrayList<>()));
@@ -119,10 +119,25 @@ public class PostController {
         User user = userRepository.getById(newPost.getAuthor().getUserName());
         //if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(newPost.getAuthor().getUserName()));
 
-        for(Hashtag h: newPost.getHashtags()){
+        if(newPost.getContent().contains("#")) {
+            String content = newPost.getContent();
+            String[] words = content.split(" ");
+            for(String s: words) {
+                if(s.startsWith("#")) {
+                    Hashtag hashtag = hashtagRepository.findHashtagByTitle(s);
+                    if(ObjectUtils.isEmpty(hashtag)) {
+                        hashtag = new Hashtag(s);
+                    }
+                    newPost.addHashtag(hashtag);
+                    hashtagRepository.save(hashtag);
+                }
+            }
+        }
+
+        /*for(Hashtag h: newPost.getHashtags()){
             Hashtag hashtag = hashtagRepository.getById(h.getTitle());
             if (ObjectUtils.isEmpty(hashtag)) hashtagRepository.save(new Hashtag(h.getTitle()));
-        }
+        }*/
 
         return new ResponseEntity<>(postRepository.save(newPost), HttpStatus.CREATED);
     }

@@ -98,7 +98,7 @@ export default function PrimarySearchAppBar({ user }) {
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       id={menuId}
@@ -120,7 +120,7 @@ export default function PrimarySearchAppBar({ user }) {
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       id={mobileMenuId}

@@ -6,15 +6,18 @@ import PrimarySearchAppBar from './navbar';
 import Post from './Post';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
+import Hashtag from './Hashtag';
 
 function UserBox({user}) {
     const urlFollowed = "/mymood/following/followUser/"+user+"/";
     const urlMyPosts = "/mymood/posting/posts?userName="+user;
     const urlFollower = "/mymood/following/follower/"+user;
+    const urlHashtags = "/mymood/following/followHashtag/"+user;
 
     const [followedUsers, setFollowedUsers] = useState([]);
     const [myPosts, setPosts] = useState([]);
     const [follower, setFollower] = useState([]);
+    const [hashtags, setHashtags] = useState([]);
 
     var fetchFollowed = async () => {
         const responseFollowed = await fetch(urlFollowed);
@@ -40,11 +43,20 @@ function UserBox({user}) {
         }
     }
 
+    var fetchHashtags = async() => {
+        const responseHashtag = await fetch(urlHashtags);
+        if(responseHashtag.ok) {
+            const jsonHashtags = await responseHashtag.json();
+            setHashtags(jsonHashtags);
+        }
+    }
+
 
     useEffect(() => {
         fetchFollowed();
         fetchMyPosts();
         fetchFollower();
+        fetchHashtags();
     }, []);
 
     return (
@@ -70,6 +82,18 @@ function UserBox({user}) {
                             <Stack spacing={0}>
                                 {followedUsers.map((followed) => {
                                     return (<User key={followed.username} user={followed} profileUser={user}/>);
+                                })}
+                            </Stack>
+                        </Paper>
+                        <br/>
+                        <Paper style={{ padding: "10px", width: "200px", textAlign: "center" }}>
+                            <PersonIcon />
+                            <br />
+                            {user} follows:
+                            <br />
+                            <Stack spacing={0}>
+                                {hashtags.map((hashtag) => {
+                                    return (<Hashtag key={hashtag.title} hashtag={hashtag} profileUser={user}></Hashtag>)
                                 })}
                             </Stack>
                         </Paper>

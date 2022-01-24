@@ -13,9 +13,52 @@ import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useState } from "react";
 import { useEffect } from "react";
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import Link from '@mui/material/Link';
+
 
 export default function Post({ post, currentUser }) {
   
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [currHashtag, setHashtag] = React.useState('');
+  const handleHashtagMenuOpen = (event) => {
+    setHashtag(event.currentTarget.innerText);
+    setAnchorEl(event.currentTarget);
+  };
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    const followUrl = "/mymood/following/followHashtag/"+currentUser+"?title="+currHashtag.substring(1, currHashtag.length);
+    fetch(followUrl, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  })
+  };
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      id= 'hashtag-menu'
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Follow</MenuItem>
+    </Menu>
+  );
+
   const likeURL = "/mymood/posting/like/"
   const unlikeURL = "/mymood/posting/unlike/"
   const [isLiked, setIsLiked] = useState(post.likedBy.filter((e)=>e.userName==currentUser).length>0);
@@ -62,7 +105,12 @@ export default function Post({ post, currentUser }) {
 
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {post.content}
+          {post.content.split(" ").map((word) => {
+            if(word.charAt(0) == "#")
+              return (<Link variant="body2" style={{color: 'blue'}} onClick={handleHashtagMenuOpen}>{word} </Link>)
+            else
+              return (<>{word} </>)
+          })}
         </Typography>
       </CardContent>
       
@@ -80,6 +128,7 @@ export default function Post({ post, currentUser }) {
           <FavoriteIcon />
         </IconButton>
       </CardActions>
+      {renderMenu}
     </Card>
   );
 }
