@@ -10,7 +10,7 @@ import * as React from 'react';
 function App() {
 
 
-  const [username, setUserName] = React.useState('Felix');
+  const [username, setUserName] = React.useState();
 
   return (
     <div className="App">

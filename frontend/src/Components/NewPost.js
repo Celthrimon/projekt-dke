@@ -45,8 +45,9 @@ export default function NewPost({ currentUser }) {
                 label="Age"
                 onChange={(e) => { setPost({ ...post, mood: e.target.value }); }}
             >
-                <MenuItem value="😀">😀</MenuItem>
-                <MenuItem value="😅">😅</MenuItem>
+                {["😀","😁","😅"].map((emoji)=>{
+                    return(<MenuItem value={emoji}>{emoji}</MenuItem>)
+                })}
             </Select>
             <Button 
                 sx={{ width: "15%", height: "56px", marginTop:"-2px" }} 

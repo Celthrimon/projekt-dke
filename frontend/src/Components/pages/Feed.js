@@ -16,8 +16,9 @@ export default function Feed({ user }) {
     var fetchURL = async () => {
         if (user == undefined) return;
         const response = await fetch(followingUrl);
-        const json = await response.json();
-        console.log(json);
+        var json = await response.json();
+        json = [...json, {username: user}];
+        console.log(json)
         var posts_temp = [];
         json.forEach(async (user_to_fetch) => {
             console.log(user_to_fetch)
@@ -43,7 +44,7 @@ export default function Feed({ user }) {
             <NewPost currentUser={user}/>
             <br></br>
             {posts.map((post) => {
-                return (<Post post={post} currentUser={user} />);
+                return (<><Post post={post} currentUser={user} /><br/></>);
             })}
         </div>
         <br></br>
