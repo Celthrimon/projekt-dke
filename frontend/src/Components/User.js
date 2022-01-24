@@ -1,5 +1,7 @@
 import { Paper } from '@mui/material';
 
+
+
 function User({ user }) {
     console.log(user);
     return (
