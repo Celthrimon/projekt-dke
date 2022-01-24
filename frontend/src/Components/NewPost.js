@@ -33,6 +33,7 @@ export default function NewPost({ currentUser }) {
             <TextField
                 sx={{ width: "70%" }}
                 id="outlined-basic"
+                value={post.content}
                 label="New Post"
                 variant="outlined"
                 onChange={(e) => { setPost({ ...post, content: e.target.value }); }}
@@ -45,7 +46,7 @@ export default function NewPost({ currentUser }) {
                 label="Age"
                 onChange={(e) => { setPost({ ...post, mood: e.target.value }); }}
             >
-                {["😀","😁","😅"].map((emoji)=>{
+                {["😀","😁","😅","🥰","🤐","😬","🤮","🤬","💩","😤","🤒"].map((emoji)=>{
                     return(<MenuItem value={emoji}>{emoji}</MenuItem>)
                 })}
             </Select>
@@ -53,6 +54,7 @@ export default function NewPost({ currentUser }) {
                 sx={{ width: "15%", height: "56px", marginTop:"-2px" }} 
                 variant="outlined"
                 onClick={ ()=>{
+
                     fetch(createURL, {
                         method: 'POST',
                         headers: {
@@ -60,6 +62,15 @@ export default function NewPost({ currentUser }) {
                         },
                         body: JSON.stringify(post)
                       });
+
+                      setPost({
+                        content:"",
+                        mood: "😀",
+                        author: {
+                            userName: currentUser
+                        },
+                        date: new Date().toISOString()
+                    });
                 }}
             >
                 Post

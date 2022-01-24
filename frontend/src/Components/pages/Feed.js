@@ -21,13 +21,10 @@ export default function Feed({ user }) {
         console.log(json)
         var posts_temp = [];
         json.forEach(async (user_to_fetch) => {
-            console.log(user_to_fetch)
-            console.log(postsUrl + user_to_fetch.username)
             var postresponse = await fetch(postsUrl + user_to_fetch.username);
             var to_append = await postresponse.json();
             posts_temp = [...posts_temp, ...to_append];
-            setPosts(posts_temp);
-            console.log(posts_temp);
+            setPosts(posts_temp); 
         });
     }
     useEffect(() => {
