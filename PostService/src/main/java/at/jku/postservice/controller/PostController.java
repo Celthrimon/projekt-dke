@@ -117,7 +117,7 @@ public class PostController {
         }
 
         User user = userRepository.getById(newPost.getAuthor().getUserName());
-        if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(newPost.getAuthor().getUserName()));
+        //if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(newPost.getAuthor().getUserName()));
 
         for(Hashtag h: newPost.getHashtags()){
             Hashtag hashtag = hashtagRepository.getById(h.getTitle());
@@ -144,7 +144,7 @@ public class PostController {
         if (userName.isEmpty() || userName.isBlank()) throw new InvalidArgumentException("userName is required!");
 
         User user = userRepository.getById(userName);
-        if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(userName));
+        //if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(userName));
 
         post.addLike(user);
 
@@ -200,7 +200,13 @@ public class PostController {
         return ResponseEntity.ok();
     }
 
-    private void createUser(String userName){
-        userRepository.save(new User(userName));
+    @RequestMapping(value = "createUserNode/{userName}", method = RequestMethod.POST)
+    private ResponseEntity<String> createUser(@PathVariable("userName") String userName){
+        User user = userRepository.findUserByUserName(userName);
+        if(ObjectUtils.isEmpty(user)) {
+            user = new User(userName);
+        }
+        userRepository.save(user);
+        return ResponseEntity.ok("");
     }
 }

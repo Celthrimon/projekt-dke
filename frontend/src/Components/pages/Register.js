@@ -25,7 +25,32 @@ export function Register() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const requestOptions = {
+
+    var requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'}
+    };
+    const followingUrl = "/mymood/following/createUserNode/"+data.get('userName');
+    fetch(followingUrl, requestOptions).then(async response => {
+      if(!response.ok) {
+        const error = response.status;
+        return Promise.reject(error);
+      }
+    }).catch(error => {
+      console.error("There was an error");
+    });
+
+    const postingUrl = "mymood/posting/createUserNode/"+data.get('userName');
+    fetch(postingUrl, requestOptions).then(async response => {
+      if(!response.ok) {
+        const error = response.status;
+        return Promise.reject(error);
+      }
+    }).catch(error => {
+      console.error("There was an error");
+    });
+
+    requestOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

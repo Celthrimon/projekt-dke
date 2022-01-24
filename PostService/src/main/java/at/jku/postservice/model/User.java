@@ -15,7 +15,7 @@ public class User {
     private String userName;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Post> posts = new HashSet<>();
 
     @JsonIgnore
