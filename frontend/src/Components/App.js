@@ -2,6 +2,7 @@
 
 import Login from './pages/Login';
 import Post from './Post'
+import Search from './pages/Search';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Register from './pages/Register';
 import Feed from './pages/Feed';
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path="/profile">
             <UserBox user={username}/>
+          </Route>
+          <Route path="/search">
+            <Search user={username}/>
           </Route>
         </Switch>
       </Router>

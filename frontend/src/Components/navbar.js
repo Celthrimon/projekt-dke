@@ -138,20 +138,9 @@ export default function PrimarySearchAppBar({ user }) {
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Search</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={0} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
+      
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -184,20 +173,18 @@ export default function PrimarySearchAppBar({ user }) {
           >
             MyMood
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton 
+              size="large" 
+              aria-label="show 4 new mails" 
+              color="inherit"
+              onClick={()=>{
+                history.push("/search")
+              }}
+            >
               <Badge badgeContent={0} color="error">
-                <MailIcon />
+                <SearchIcon />
               </Badge>
             </IconButton>
             <IconButton

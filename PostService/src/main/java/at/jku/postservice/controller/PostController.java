@@ -224,4 +224,9 @@ public class PostController {
         userRepository.save(user);
         return ResponseEntity.ok("");
     }
+
+    @RequestMapping(value = "hashtags/", method = RequestMethod.GET)
+    private ResponseEntity<List<Hashtag>> getAllHastags(){
+        return ResponseEntity.ok(hashtagRepository.findAll());
+    }
 }
