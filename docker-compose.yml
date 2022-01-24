@@ -89,4 +89,10 @@ services:
       - 443:443
       - 80:80
 
+#  frontend:
+#    build:
+#      context: ./frontend
+#    ports:
+#      - "3000:3000"
+
 
