@@ -44,6 +44,7 @@ public class Post {
         this.content = content;
         this.author = author;
         this.date = date;
+        this.mood = mood;
     }
 
     public void addHashtag(Hashtag newHashtag) {
