@@ -9,8 +9,6 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useState, useEffect } from "react";
 
 export default function NewPost({ currentUser }) {

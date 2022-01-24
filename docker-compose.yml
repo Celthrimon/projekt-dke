@@ -9,13 +9,13 @@ services:
     depends_on:
       - neofollowing
 
-  logservice:
-    build:
-      context: ./LogService
-    ports:
-      - "8082:8082"
-    depends_on:
-      - mongolog
+#  logservice:
+#    build:
+#      context: ./LogService
+#    ports:
+#      - "8082:8082"
+#    depends_on:
+#      - mongolog
 
   notificationservice:
     build:

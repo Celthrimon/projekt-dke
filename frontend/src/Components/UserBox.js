@@ -8,7 +8,10 @@ import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
 import Hashtag from './Hashtag';
 
+
+
 function UserBox({user}) {
+
     const urlFollowed = "/mymood/following/followUser/"+user+"/";
     const urlMyPosts = "/mymood/posting/posts?userName="+user;
     const urlFollower = "/mymood/following/follower/"+user;
@@ -51,12 +54,16 @@ function UserBox({user}) {
         }
     }
 
-
-    useEffect(() => {
+    var update = ()=>{
+        console.log("update")
         fetchFollowed();
         fetchMyPosts();
         fetchFollower();
         fetchHashtags();
+    }
+
+    useEffect(() => {
+        update()
     }, []);
 
     return (
@@ -81,7 +88,7 @@ function UserBox({user}) {
                             <br />
                             <Stack spacing={0}>
                                 {followedUsers.map((followed) => {
-                                    return (<User key={followed.username} user={followed} profileUser={user}/>);
+                                    return (<User key={followed.username} user={followed} profileUser={user} update={()=>{setTimeout(update,200)}}/>);
                                 })}
                             </Stack>
                         </Paper>
@@ -93,7 +100,7 @@ function UserBox({user}) {
                             <br />
                             <Stack spacing={0}>
                                 {hashtags.map((hashtag) => {
-                                    return (<Hashtag key={hashtag.title} hashtag={hashtag} profileUser={user}></Hashtag>)
+                                    return (<Hashtag key={hashtag.title} hashtag={hashtag} profileUser={user} update={()=>{setTimeout(update,200)}} />)
                                 })}
                             </Stack>
                         </Paper>
@@ -108,7 +115,7 @@ function UserBox({user}) {
                             <br />
                             <Stack spacing={0}>
                                 {follower.map((follower) => {
-                                    return (<User key={follower.username} user={follower} profileUser={user}/>);
+                                    return (<User key={follower.username} user={follower} profileUser={user} update={()=>{setTimeout(update,200)}}/>);
                                 })}
                             </Stack>
                         </Paper>

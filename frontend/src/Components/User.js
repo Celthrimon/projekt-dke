@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 
 
 
-function User({ user, profileUser }) {
+function User({ user, profileUser, update }) {
     console.log(user);
     console.log(profileUser);
     
@@ -30,6 +30,7 @@ function User({ user, profileUser }) {
                                   'Content-Type': 'application/json'
                                 }
                               });
+                            update();
                         }}
                     >
                         remove

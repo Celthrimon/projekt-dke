@@ -2,7 +2,7 @@ import { Paper } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
-function Hashtag({ hashtag, profileUser }) {
+function Hashtag({ hashtag, profileUser, update }) {
     console.log(hashtag);
     console.log(profileUser);
     
@@ -28,6 +28,7 @@ function Hashtag({ hashtag, profileUser }) {
                                   'Content-Type': 'application/json'
                                 }
                               });
+                              update();
                         }}
                     >
                         remove
