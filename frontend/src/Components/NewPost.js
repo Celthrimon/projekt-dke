@@ -31,6 +31,7 @@ export default function NewPost({ currentUser }) {
             <TextField
                 sx={{ width: "70%" }}
                 id="outlined-basic"
+                multiline
                 value={post.content}
                 label="New Post"
                 variant="outlined"

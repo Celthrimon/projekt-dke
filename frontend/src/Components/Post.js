@@ -104,7 +104,7 @@ export default function Post({ post, currentUser }) {
       />
 
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" style={{whiteSpace: "pre-wrap"}}>
           {post.content.split(" ").map((word) => {
             if(word.charAt(0) == "#")
               return (<Link variant="body2" style={{color: 'blue'}} onClick={handleHashtagMenuOpen}>{word} </Link>)
