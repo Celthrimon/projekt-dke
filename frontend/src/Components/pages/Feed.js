@@ -1,17 +1,16 @@
 import * as React from 'react';
-import Userpanel from '../Userpanel';
+import {useEffect, useState} from 'react';
 import PrimarySearchAppBar from '../navbar';
 import Post from '../Post';
-import { useState, useEffect } from 'react';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Button } from '@mui/material';
+import {Button} from '@mui/material';
 import NewPost from '../NewPost';
 
-export default function Feed({ user }) {
+export default function Feed({user}) {
 
     const followingUrl = "/mymood/following/followUser/" + user + "/";
     const postsUrl = "/mymood/posting/posts/?userName=";
-    const followingHashtagsUrl = "/mymood/following/followHashtag/"+user;
+    const followingHashtagsUrl = "/mymood/following/followHashtag/" + user;
     const postsUrlHashtags = "/mymood/posting/posts/?hashtag=";
     const [posts, setPosts] = useState([]);
     const [hashtagPosts, setHashtagPosts] = useState([]);
@@ -34,8 +33,8 @@ export default function Feed({ user }) {
             console.log(posts_temp);
         });
     }
-    var fetchUrlHashtags = async() => {
-        if(user == undefined) return;
+    var fetchUrlHashtags = async () => {
+        if (user == undefined) return;
         const response = await fetch(followingHashtagsUrl);
         var json = await response.json();
         console.log(json);
@@ -62,12 +61,12 @@ export default function Feed({ user }) {
         <PrimarySearchAppBar user={user}></PrimarySearchAppBar>
         <br></br>
 
-        <div style={{ width: "60%", maxWidth: "600px", margin: "auto" }}>
+        <div style={{width: "60%", maxWidth: "600px", margin: "auto"}}>
             <NewPost currentUser={user}/>
             <br></br>
             {console.log(posts)}
             {posts.map((post) => {
-                return (<><Post post={post} currentUser={user} /><br/></>);
+                return (<><Post post={post} currentUser={user}/><br/></>);
             })}
             {console.log(hashtagPosts)}
             {hashtagPosts.map((post) => {
@@ -75,12 +74,12 @@ export default function Feed({ user }) {
             })}
         </div>
         <br></br>
-        <div style={{ width: "35px", margin: "auto" }}>
+        <div style={{width: "35px", margin: "auto"}}>
             <Button onClick={() => {
                 fetchURL();
                 fetchUrlHashtags();
-            }} >
-                <RefreshIcon sx={{ width: "35px" }} />
+            }}>
+                <RefreshIcon sx={{width: "35px"}}/>
             </Button>
         </div>
 

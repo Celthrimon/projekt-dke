@@ -19,11 +19,11 @@ public class LogRepository {
         return mongoTemplate.save(log).getMessage();
     }
 
-    public List<Log> getAllLogs(){
+    public List<Log> getAllLogs() {
         return mongoTemplate.findAll(Log.class);
     }
 
-    public List<Log> getAllLogsBy(String filter){
-        return getAllLogs().stream().filter(s-> s.getMessage().contains(filter)).collect(Collectors.toList());
+    public List<Log> getAllLogsBy(String filter) {
+        return getAllLogs().stream().filter(s -> s.getMessage().contains(filter)).collect(Collectors.toList());
     }
 }

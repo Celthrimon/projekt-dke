@@ -1,27 +1,18 @@
 import * as React from "react";
-import {
-    Card,
-    CardContent,
-    CardActions,
-    Button,
-    Select,
-    MenuItem,
-    TextField,
-    Typography,
-} from "@mui/material";
-import { useState, useEffect } from "react";
+import {useState} from "react";
+import {Button, MenuItem, Select, TextField,} from "@mui/material";
 
-export default function NewPost({ currentUser }) {
+export default function NewPost({currentUser}) {
 
     const [post, setPost] = useState(
-    {
-        content:"",
-        mood: "😀",
-        author: {
-            userName: currentUser
-        },
-        date: new Date().toISOString()
-    });
+        {
+            content: "",
+            mood: "😀",
+            author: {
+                userName: currentUser
+            },
+            date: new Date().toISOString()
+        });
 
     console.log(post)
     const createURL = "/mymood/posting/post/"
@@ -29,42 +20,46 @@ export default function NewPost({ currentUser }) {
     return (
         <div>
             <TextField
-                sx={{ width: "70%" }}
+                sx={{width: "70%"}}
                 id="outlined-basic"
                 multiline
                 value={post.content}
                 label="New Post"
                 variant="outlined"
-                onChange={(e) => { setPost({ ...post, content: e.target.value }); }}
+                onChange={(e) => {
+                    setPost({...post, content: e.target.value});
+                }}
             />
             <Select
-                sx={{ width: "15%" }}
+                sx={{width: "15%"}}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={post.mood}
                 label="Age"
-                onChange={(e) => { setPost({ ...post, mood: e.target.value }); }}
+                onChange={(e) => {
+                    setPost({...post, mood: e.target.value});
+                }}
             >
-                {["😀","😁","😅","🥰","🤐","😬","🤮","🤬","💩","😤","🤒"].map((emoji)=>{
-                    return(<MenuItem value={emoji}>{emoji}</MenuItem>)
+                {["😀", "😁", "😅", "🥰", "🤐", "😬", "🤮", "🤬", "💩", "😤", "🤒"].map((emoji) => {
+                    return (<MenuItem value={emoji}>{emoji}</MenuItem>)
                 })}
             </Select>
-            <Button 
-                sx={{ width: "15%", height: "56px", marginTop:"-2px" }} 
+            <Button
+                sx={{width: "15%", height: "56px", marginTop: "-2px"}}
                 variant="outlined"
-                onClick={ ()=>{
+                onClick={() => {
                     console.log(post.content);
-                    if(post.content.includes('#')) {
+                    if (post.content.includes('#')) {
                         var words = [];
                         var hashtags = '[\n';
                         words = post.content.split(" ");
-                        for(var i = 0; i < words.length; i++) {
-                            if(words[i].startsWith('#')) {
+                        for (var i = 0; i < words.length; i++) {
+                            if (words[i].startsWith('#')) {
                                 var to_append = words[i];
-                                if(i+1!=words.length)
-                                    hashtags += '{\"title\": \"'+to_append+'\"},\n';
+                                if (i + 1 != words.length)
+                                    hashtags += '{\"title\": \"' + to_append + '\"},\n';
                                 else
-                                    hashtags += '{\"title\": \"'+to_append+'\"}\n';
+                                    hashtags += '{\"title\": \"' + to_append + '\"}\n';
                             }
                         }
                         hashtags += ']';
@@ -81,13 +76,13 @@ export default function NewPost({ currentUser }) {
                     fetch(createURL, {
                         method: 'POST',
                         headers: {
-                          'Content-Type': 'application/json'
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(post)
-                      });
+                    });
 
-                      setPost({
-                        content:"",
+                    setPost({
+                        content: "",
                         mood: "😀",
                         author: {
                             userName: currentUser

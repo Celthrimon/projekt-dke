@@ -4,7 +4,7 @@ public class Notification {
     String toUser;
     String content;
 
-    public Notification ( String to, String content){
+    public Notification(String to, String content) {
 
         this.toUser = to;
         this.content = content;

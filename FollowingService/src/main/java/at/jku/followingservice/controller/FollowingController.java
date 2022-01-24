@@ -66,7 +66,7 @@ public class FollowingController {
     public ResponseEntity<User> followHashtag
             (@PathVariable("userId") String username, @RequestParam String title) {
         User follower = followingService.findByUsername(username);
-        Hashtag hashtag = followingService.findByTitle("#"+title);
+        Hashtag hashtag = followingService.findByTitle("#" + title);
         follower.followHashtag(hashtag);
         return ResponseEntity.ok(followingService.save(follower));
     }
@@ -75,7 +75,7 @@ public class FollowingController {
     public ResponseEntity<User> unfollowHashtag
             (@PathVariable("userId") String username, @RequestParam String title) {
         User follower = followingService.findByUsername(username);
-        Hashtag hashtag = followingService.findByTitle("#"+title);
+        Hashtag hashtag = followingService.findByTitle("#" + title);
         return ResponseEntity.ok(followingService.unfollowHashtag(follower, hashtag));
     }
 

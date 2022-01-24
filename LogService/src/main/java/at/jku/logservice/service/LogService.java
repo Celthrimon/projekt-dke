@@ -1,7 +1,6 @@
 package at.jku.logservice.service;
 
 import at.jku.logservice.model.Log;
-import at.jku.logservice.repo.LogRepository;
 import at.jku.logservice.repo.RepositoryLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,19 +23,16 @@ public class LogService {
         return repositoryLog.save(log).getMessage();
     }
 
-    public List<Log> getAllLogs()
-    {
+    public List<Log> getAllLogs() {
 
 
         //return logRepository.getAllLogs();
         return repositoryLog.findAll();
     }
 
-    public List<Log> getAllLogsBy(String filter)
-    {
-        return repositoryLog.findAll().stream().filter(s-> s.getMessage().contains(filter)).collect(Collectors.toList());
+    public List<Log> getAllLogsBy(String filter) {
+        return repositoryLog.findAll().stream().filter(s -> s.getMessage().contains(filter)).collect(Collectors.toList());
     }
-
 
 
 }

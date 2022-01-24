@@ -1,25 +1,12 @@
-import User from './User'
-import {useState, useEffect} from 'react';
-import PersonIcon from '@mui/icons-material/Person';
+import {useEffect, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import SendIcon from '@mui/icons-material/Send';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import { red } from '@mui/material/colors';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Paper, Stack, Typography } from '@mui/material';
-import UserBox from './UserBox';
-import { Box } from '@mui/system';
+import {Box} from '@mui/system';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Post from './Post'
@@ -27,8 +14,8 @@ import Post from './Post'
 
 const theme = createTheme();
 
-function Userpanel({ user }) {
-    const urlFollower = "/mymood/following/followUser/"+user+"/";
+function Userpanel({user}) {
+    const urlFollower = "/mymood/following/followUser/" + user + "/";
     var urlPostings = "/mymood/posting/posts?userName=";
 
     const [users, setUsers] = useState([]);
@@ -36,14 +23,14 @@ function Userpanel({ user }) {
 
     var fetchURL = async () => {
         const responseFollower = await fetch(urlFollower);
-        if(responseFollower.ok) {
+        if (responseFollower.ok) {
             const jsonFollower = await responseFollower.json();
             setUsers(jsonFollower);
-            for(var i = 0; i < users.length; i++) {
+            for (var i = 0; i < users.length; i++) {
                 urlPostings += users[i].username;
                 console.log(urlPostings);
                 const responsePostings = await fetch(urlPostings);
-                if(responsePostings.ok) {
+                if (responsePostings.ok) {
                     const jsonPostings = await responsePostings.json();
                     console.log(jsonPostings);
                     setPosts(posts => posts.concat(jsonPostings));
@@ -74,7 +61,7 @@ function Userpanel({ user }) {
             </div> */}
             <ThemeProvider theme={theme}>
                 <Container component="main" maxWidth="sm">
-                    <CssBaseline />
+                    <CssBaseline/>
                     <Box
                         sx={{
                             display: 'flex',
@@ -90,7 +77,7 @@ function Userpanel({ user }) {
                             </Grid>
                             <Grid item xs={12} sm={8.5}>
                                 <TextField
-                                    sx={{ m : 1}}
+                                    sx={{m: 1}}
                                     fullWidth
                                     id="outlined-textarea"
                                     label="What is your mood today?"
@@ -100,20 +87,21 @@ function Userpanel({ user }) {
                             </Grid>
                             <Grid item xs={12} sm={2}>
                                 <Button
-                                    sx={{ mt: 2, ml: 1 }}
+                                    sx={{mt: 2, ml: 1}}
                                     fullWidth
                                     variant="outlined"
-                                    startIcon={<SendIcon />}
+                                    startIcon={<SendIcon/>}
                                 >
                                     Post
-                                </Button>   
+                                </Button>
                             </Grid>
                             {console.log(posts)}
                             {posts.map((post) => {
                                 return (
                                     <>
                                         <Grid item xs={12}>
-                                            <Post key={post.id} userName={post.author.userName} date={post.date} content={post.content}></Post>
+                                            <Post key={post.id} userName={post.author.userName} date={post.date}
+                                                  content={post.content}></Post>
                                         </Grid>
                                     </>
                                 );

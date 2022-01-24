@@ -8,11 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.EncodeException;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("mymood/loging")
@@ -23,13 +20,13 @@ public class LogController {
 
 
     @RequestMapping(value = "/log", method = RequestMethod.POST)
-    public ResponseEntity<String> saveLog (@RequestParam String message) throws IOException, EncodeException {
+    public ResponseEntity<String> saveLog(@RequestParam String message) throws IOException, EncodeException {
 
         return ResponseEntity.ok(logService.saveLog(new Log(message, new Date())));
     }
 
     @GetMapping("/all")
-    List<Log> all(){
+    List<Log> all() {
         return logService.getAllLogs();
     }
 
@@ -39,7 +36,7 @@ public class LogController {
     }
 
     @GetMapping("/example")
-    public Log example(){
+    public Log example() {
         return new Log("beispiel", new Date());
     }
 

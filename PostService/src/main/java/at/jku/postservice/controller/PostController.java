@@ -115,13 +115,13 @@ public class PostController {
         User user = userRepository.getById(newPost.getAuthor().getUserName());
         //if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(newPost.getAuthor().getUserName()));
 
-        if(newPost.getContent().contains("#")) {
+        if (newPost.getContent().contains("#")) {
             String content = newPost.getContent();
             String[] words = content.split(" ");
-            for(String s: words) {
-                if(s.startsWith("#")) {
+            for (String s : words) {
+                if (s.startsWith("#")) {
                     Hashtag hashtag = hashtagRepository.findHashtagByTitle(s);
-                    if(ObjectUtils.isEmpty(hashtag)) {
+                    if (ObjectUtils.isEmpty(hashtag)) {
                         hashtag = new Hashtag(s);
                     }
                     newPost.addHashtag(hashtag);
@@ -212,9 +212,9 @@ public class PostController {
     }
 
     @RequestMapping(value = "createUserNode/{userName}", method = RequestMethod.POST)
-    private ResponseEntity<String> createUser(@PathVariable("userName") String userName){
+    private ResponseEntity<String> createUser(@PathVariable("userName") String userName) {
         User user = userRepository.findUserByUserName(userName);
-        if(ObjectUtils.isEmpty(user)) {
+        if (ObjectUtils.isEmpty(user)) {
             user = new User(userName);
         }
         userRepository.save(user);
@@ -222,7 +222,7 @@ public class PostController {
     }
 
     @RequestMapping(value = "hashtags/", method = RequestMethod.GET)
-    private ResponseEntity<List<Hashtag>> getAllHastags(){
+    private ResponseEntity<List<Hashtag>> getAllHastags() {
         return ResponseEntity.ok(hashtagRepository.findAll());
     }
 }

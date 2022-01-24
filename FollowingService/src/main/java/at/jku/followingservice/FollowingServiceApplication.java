@@ -31,17 +31,25 @@ public class FollowingServiceApplication {
             User beni = new User("Beni");
             User felix = new User("Felix");
             User max = new User("Max");
+            User general = new User("General");
 
             Hashtag inflation = new Hashtag("#inflation");
             Hashtag corona = new Hashtag("#corona");
+
+            Hashtag services = new Hashtag("#services");
+            Hashtag aufwandsschaetzung = new Hashtag("#aufwandsschätzung");
 
             userRepository.save(mario);
             userRepository.save(beni);
             userRepository.save(felix);
             userRepository.save(max);
+            userRepository.save(general);
 
             hashtagRepository.save(inflation);
             hashtagRepository.save(corona);
+
+            hashtagRepository.save(services);
+            hashtagRepository.save(aufwandsschaetzung);
 
             mario = userRepository.findByUsername(mario.getUsername());
             mario.followUser(beni);
