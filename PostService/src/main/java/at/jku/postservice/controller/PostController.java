@@ -112,10 +112,6 @@ public class PostController {
             throw new InvalidArgumentException("date is required!");
         }
 
-        if (ObjectUtils.isEmpty(newPost.getContent())) {
-            throw new InvalidArgumentException("content is required!");
-        }
-
         User user = userRepository.getById(newPost.getAuthor().getUserName());
         //if (ObjectUtils.isEmpty(user)) user = userRepository.save(new User(newPost.getAuthor().getUserName()));
 
