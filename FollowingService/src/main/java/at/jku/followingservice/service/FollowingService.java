@@ -24,4 +24,8 @@ public interface FollowingService {
     User unfollowHashtag(User follower, Hashtag hashtag);
 
     void remove(User user);
+
+    boolean checkUserFollowsUser(User follower, User followed);
+
+    boolean checkUserFollowsHashtag(User follower, Hashtag hashtag);
 }
