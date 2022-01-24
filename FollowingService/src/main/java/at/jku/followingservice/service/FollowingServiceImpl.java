@@ -61,4 +61,14 @@ public class FollowingServiceImpl implements FollowingService {
     public void remove(User user) {
         userRepository.delete(user);
     }
+
+    @Override
+    public boolean checkUserFollowsUser(User follower, User followed) {
+        return userRepository.checkUserFollowsUser(follower.getUsername(), followed.getUsername());
+    }
+
+    @Override
+    public boolean checkUserFollowsHashtag(User follower, Hashtag hashtag) {
+        return userRepository.checkUserFollowsHashtag(follower.getUsername(), hashtag.getTitle());
+    }
 }

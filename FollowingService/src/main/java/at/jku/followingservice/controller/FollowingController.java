@@ -146,6 +146,22 @@ public class FollowingController {
         }
         return ResponseEntity.ok(newlyCreatedHashtags);
     }
+
+    @RequestMapping(value = "validateFollowsUser/{userId}", method = RequestMethod.GET)
+    private ResponseEntity<Boolean> checkUserFollowsUser(@PathVariable("userId") String userName, @RequestParam String user) {
+        User follower = followingService.findByUsername(userName);
+        User followed = followingService.findByUsername(user);
+        boolean check = followingService.checkUserFollowsUser(follower, followed);
+        return ResponseEntity.ok(check);
+    }
+
+    @RequestMapping(value = "validateFollowsHashtag/{userId}", method = RequestMethod.GET)
+    private ResponseEntity<Boolean> checkUserFollowsHashtag(@PathVariable("userId") String userName, @RequestParam String title) {
+        User follower = followingService.findByUsername(userName);
+        Hashtag hashtag = followingService.findByTitle("#" + title);
+        boolean check = followingService.checkUserFollowsHashtag(follower, hashtag);
+        return ResponseEntity.ok(check);
+    }
 }
 
 
