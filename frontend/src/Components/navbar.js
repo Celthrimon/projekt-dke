@@ -15,6 +15,12 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import { Avatar } from "@mui/material";
+import { red } from "@mui/material/colors";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useHistory} from 'react-router-dom';
+
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,7 +62,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar({ user }) {
+  const history = useHistory();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -80,6 +88,11 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const toProfile = () => {
+    handleMenuClose();
+    history.push('/profile');
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -97,8 +110,8 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>{user}</MenuItem>
+      <MenuItem onClick={toProfile}>My account</MenuItem>
     </Menu>
   );
 
@@ -147,7 +160,9 @@ export default function PrimarySearchAppBar() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <Avatar sx={{ bgcolor: red[500] }} aria-label={user}>
+            {user.split("")[0]}
+          </Avatar>
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -209,7 +224,9 @@ export default function PrimarySearchAppBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar sx={{ bgcolor: red[500] }} aria-label={user}>
+                {user.split("")[0]}
+              </Avatar>
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

@@ -17,19 +17,44 @@ import { useHistory} from 'react-router-dom';
 
 const theme = createTheme();
 
-export function Login() {
+export function Login(props) {
 
-    const history = useHistory();
+  const history = useHistory();
+  const url = "/mymood/user/login";
+
+  const [loggedIn, setLoggedIn] =  React.useState(true);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        username: data.get('userName'),
+        password: data.get('password')
+      })
+    }
+    fetch(url, requestOptions).then(async response => {
+      const token = response.text();
+
+      if(!response.ok) {
+        const error = response.status;
+        setLoggedIn(false);
+        console.log(loggedIn);
+        return Promise.reject(error);
+      } else {
+        console.log(token);
+        setLoggedIn(true);
+        console.log(loggedIn);
+        props.changeUserName(data.get('userName'));
+        history.push('/view');
+      }
+    })
+    .catch(error => {
+      console.error("There was an error");
     });
-    history.push('/view');
   };
 
   return (
@@ -55,10 +80,10 @@ export function Login() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="userName"
+              label="Username"
+              name="userName"
+              autoComplete="userName"
               autoFocus
             />
             <TextField
@@ -75,6 +100,12 @@ export function Login() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {
+              loggedIn === false &&
+              <Typography variant="caption" display="block" style={{color: "red"}} gutterBottom>
+                Username or password wrong!
+              </Typography>
+            }
             <Button
               type="submit"
               fullWidth

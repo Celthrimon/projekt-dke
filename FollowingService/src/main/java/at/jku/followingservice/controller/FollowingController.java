@@ -32,6 +32,13 @@ public class FollowingController {
         return ResponseEntity.ok(new ArrayList<>(user.getFollowedUsers()));
     }
 
+    @RequestMapping(value = "follower/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<List<User>> findFollower(@PathVariable("userId") String username) {
+        User user = followingService.findByUsername(username);
+        List<User> follower = followingService.findUserFollower(user.getUsername());
+        return ResponseEntity.ok(new ArrayList<>(follower));
+    }
+
     @RequestMapping(value = "followUser/{userId}", method = RequestMethod.POST)
     public ResponseEntity<User> followUser
             (@PathVariable("userId") String userNameFollower, @RequestParam String user) {
