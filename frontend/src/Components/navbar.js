@@ -18,6 +18,8 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { Avatar } from "@mui/material";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useHistory} from 'react-router-dom';
+
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -61,6 +63,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar({ user }) {
+  const history = useHistory();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -84,6 +88,11 @@ export default function PrimarySearchAppBar({ user }) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const toProfile = () => {
+    handleMenuClose();
+    history.push('/profile');
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -102,7 +111,7 @@ export default function PrimarySearchAppBar({ user }) {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>{user}</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={toProfile}>My account</MenuItem>
     </Menu>
   );
 

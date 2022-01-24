@@ -58,7 +58,7 @@ function Userpanel({ user }) {
 
     return (
         <>
-            <div>
+            {/* <div>
                 <Paper style={{ padding: "10px", width: "200px", textAlign: "center" }}>
                     <PersonIcon />
                     <br />
@@ -71,7 +71,7 @@ function Userpanel({ user }) {
                         })}
                     </Stack>
                 </Paper>
-            </div>
+            </div> */}
             <ThemeProvider theme={theme}>
                 <Container component="main" maxWidth="sm">
                     <CssBaseline />
@@ -79,9 +79,7 @@ function Userpanel({ user }) {
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
-                            alignItems: 'center',
-                            border: '1px solid grey',
-                            borderRadius: 2
+                            alignItems: 'center'
                         }}
                     >
                         <Grid container spacing={2}>

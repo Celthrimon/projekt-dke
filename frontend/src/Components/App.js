@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Register from './pages/Register';
 import Feed from './pages/Feed';
 import * as React from 'react';
+import UserBox from './UserBox';
 
 function App() {
 
@@ -24,6 +25,9 @@ function App() {
           </Route>
           <Route path="/view">
             <Feed user={username}/>
+          </Route>
+          <Route path="/profile">
+            <UserBox user={username}/>
           </Route>
         </Switch>
       </Router>
