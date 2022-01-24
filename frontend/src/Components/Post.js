@@ -43,6 +43,7 @@ export default function Post({ post, currentUser }) {
   const minutes = post.date.split("T")[1].split(":")[1];
 
   return (
+
     <Card sx={{ maxWidth: 600 }}>
       <CardHeader
         avatar={

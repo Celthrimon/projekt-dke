@@ -10,7 +10,7 @@ import * as React from 'react';
 function App() {
 
 
-  const [username, setUserName] = React.useState('Mario');
+  const [username, setUserName] = React.useState('Felix');
 
   return (
     <div className="App">
@@ -20,7 +20,7 @@ function App() {
             <Login changeUserName={username => setUserName(username)}></Login>
           </Route>
           <Route path="/register" exact>
-            <Register changeUserName={username => setUserName(username)}></Register>
+            <Register></Register>
           </Route>
           <Route path="/view">
             <Feed user={username}/>

@@ -16,7 +16,7 @@ import { useHistory} from 'react-router-dom';
 
 const theme = createTheme();
 
-export function Register(props) {
+export function Register() {
 
     const history = useHistory();
     const [existsUser, setExistsUser] =  React.useState(false);
@@ -44,8 +44,7 @@ export function Register(props) {
       } else {
         console.log(user);
         setExistsUser(false);
-        props.changeUserName(data.get('userName'));
-        history.push('/view');
+        history.push('/');
       }
     })
     .catch(error => {
