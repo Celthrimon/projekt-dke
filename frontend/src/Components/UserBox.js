@@ -132,7 +132,7 @@ function UserBox({user}) {
                         {user + "'s"} posts:
                         <br/>
                         <br/>
-                        {myPosts.map((post) => {
+                        {myPosts.sort((a, b) => a.date < b.date ? 1:-1).map((post) => {
                             return (<><Post post={post} currentUser={user}/><br/></>);
                         })}
                     </Grid>

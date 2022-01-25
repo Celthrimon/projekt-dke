@@ -89,6 +89,11 @@ export default function PrimarySearchAppBar({user}) {
         history.push('/profile');
     }
 
+    const handleLogOut = () => {
+        handleMenuClose();
+        history.push('/');
+    }
+
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
         <Menu
@@ -106,8 +111,8 @@ export default function PrimarySearchAppBar({user}) {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>{user}</MenuItem>
             <MenuItem onClick={toProfile}>My account</MenuItem>
+            <MenuItem onClick={handleLogOut}>Logout</MenuItem>
         </Menu>
     );
 

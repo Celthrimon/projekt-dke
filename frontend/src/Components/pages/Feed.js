@@ -64,14 +64,22 @@ export default function Feed({user}) {
         <div style={{width: "60%", maxWidth: "600px", margin: "auto"}}>
             <NewPost currentUser={user}/>
             <br></br>
-            {console.log(posts)}
-            {posts.map((post) => {
+            {/* {console.log(posts)}
+            {posts.sort((a, b) => a.date < b.date ? 1:-1).map((post) => {
                 return (<><Post post={post} currentUser={user}/><br/></>);
             })}
             {console.log(hashtagPosts)}
             {hashtagPosts.map((post) => {
                 return (<><Post post={post} currentUser={user}/><br/></>)
-            })}
+            })} */}
+            {
+                posts.concat(hashtagPosts)
+                    .filter((i, p) => posts.indexOf(i)===p)
+                    .sort((a, b) => a.date < b.date ? 1:-1)
+                    .map((post) => {
+                        return (<><Post post={post} currentUser={user}/><br/></>);
+                    })
+            }
         </div>
         <br></br>
         <div style={{width: "35px", margin: "auto"}}>
