@@ -72,9 +72,10 @@ export default function Feed({user}) {
             {hashtagPosts.map((post) => {
                 return (<><Post post={post} currentUser={user}/><br/></>)
             })} */}
+            {console.log(posts.concat(hashtagPosts))}
             {
                 posts.concat(hashtagPosts)
-                    .filter((i, p) => posts.indexOf(i)===p)
+                    .filter((i, p) => posts.concat(hashtagPosts).indexOf(i)===p)
                     .sort((a, b) => a.date < b.date ? 1:-1)
                     .map((post) => {
                         return (<><Post post={post} currentUser={user}/><br/></>);
