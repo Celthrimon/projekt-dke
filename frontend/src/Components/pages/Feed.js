@@ -52,7 +52,7 @@ export default function Feed({user}) {
     }
     useEffect(() => {
         fetchURL();
-        fetchUrlHashtags();
+        fetchUrlHashtags()
     }, []);
 
     if (user == undefined) return (<a href="/">You should not be here</a>);
@@ -72,10 +72,9 @@ export default function Feed({user}) {
             {hashtagPosts.map((post) => {
                 return (<><Post post={post} currentUser={user}/><br/></>)
             })} */}
-            {console.log(posts.concat(hashtagPosts))}
             {
                 posts.concat(hashtagPosts)
-                    .filter((i, p) => posts.concat(hashtagPosts).indexOf(i)===p)
+                    .filter((v, i, a) => a.findIndex(t => (t.id===v.id))===i)
                     .sort((a, b) => a.date < b.date ? 1:-1)
                     .map((post) => {
                         return (<><Post post={post} currentUser={user}/><br/></>);

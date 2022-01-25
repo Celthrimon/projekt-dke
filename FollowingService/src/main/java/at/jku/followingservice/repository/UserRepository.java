@@ -14,7 +14,7 @@ public interface UserRepository extends Neo4jRepository<User, String> {
 
     List<User> findByFollowedHashtagsTitle(String title);
 
-    @Query("MATCH(f:User {username:$follower})-[r:FOLLOWS]-(fd:User {username:$followed}) DELETE r RETURN f;")
+    @Query("MATCH(f:User {username:$follower})-[r:FOLLOWS]->(fd:User {username:$followed}) DELETE r RETURN f;")
     User unfollowUser(String follower, String followed);
 
     @Query("MATCH(f:User {username:$follower})-[r:FOLLOWS]-(h:Hashtag {title:$title}) DELETE r RETURN f;")
