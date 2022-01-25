@@ -38,6 +38,7 @@ public class FollowingServiceApplication {
 
             Hashtag services = new Hashtag("#services");
             Hashtag aufwandsschaetzung = new Hashtag("#aufwandsschätzung");
+            Hashtag architecture = new Hashtag("#architecture");
 
             userRepository.save(mario);
             userRepository.save(beni);
@@ -50,6 +51,7 @@ public class FollowingServiceApplication {
 
             hashtagRepository.save(services);
             hashtagRepository.save(aufwandsschaetzung);
+            hashtagRepository.save(architecture);
 
             mario = userRepository.findByUsername(mario.getUsername());
             mario.followUser(beni);
